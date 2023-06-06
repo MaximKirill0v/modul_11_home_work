@@ -18,6 +18,14 @@ class Transport(ABC):
     __speed = None
     __max_capacity = None
 
+    @abstractmethod
+    def speed(self):
+        raise NotImplementedError
+
+    @abstractmethod
+    def max_capacity(self):
+        raise NotImplementedError
+
 
 class ElectricScooter(Transport):
     __speed = 10

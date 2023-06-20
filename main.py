@@ -19,6 +19,11 @@ from abc import ABC, abstractmethod
 # методом, который принимает пароль и определяет, подходит он к двери или
 # нет. Таким образом к оригинальной двери мы накладываем логику проверки
 # доступа.
+class PasswordError(Exception):
+    def __init__(self, text: str):
+        self.__text = text
+
+
 class Door(ABC):
     @abstractmethod
     def open(self):
@@ -40,26 +45,26 @@ class LaboratoryDoor(Door):
 class SecurityDoor:
     __password = "12345"
 
-    def __init__(self, input_password: str, door: LaboratoryDoor):
-        self.__input_password = input_password
+    def __init__(self, door: LaboratoryDoor):
         self.__door = door
 
-    def __is_valid_password(self):
-        return self.__input_password == SecurityDoor.__password
+    def open(self, password_input: str):
+        if password_input != SecurityDoor.__password:
+            raise PasswordError(f"Не верный пароль. Дверь закрыта.")
+        self.__door.open()
 
-    def open(self):
-        print("Верный пароль, дверь открыта.") if self.__is_valid_password() else print("Не верный пароль.")
-
-    @staticmethod
-    def close():
-        print("Дверь закрыта.")
+    def close(self):
+        self.__door.close()
 
 
 def execute_application():
     laboratory_door = LaboratoryDoor()
-    security_door = SecurityDoor("12345", laboratory_door)
-    security_door.open()
-    security_door.close()
+    security_door = SecurityDoor(laboratory_door)
+    try:
+        security_door.open("12345")
+        security_door.close()
+    except PasswordError as e:
+        print(e)
 
 
 if __name__ == "__main__":

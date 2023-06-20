@@ -21,7 +21,7 @@ from abc import ABC, abstractmethod
 # доступа.
 class PasswordError(Exception):
     def __init__(self, text: str):
-        self.__text = text
+        self.text = text
 
 
 class Door(ABC):
@@ -48,8 +48,11 @@ class SecurityDoor:
     def __init__(self, door: LaboratoryDoor):
         self.__door = door
 
+    def __authentication(self, password: str):
+        return password == self.__password
+
     def open(self, password_input: str):
-        if password_input != SecurityDoor.__password:
+        if not self.__authentication(password_input):
             raise PasswordError(f"Не верный пароль. Дверь закрыта.")
         self.__door.open()
 

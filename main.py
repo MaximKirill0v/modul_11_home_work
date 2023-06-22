@@ -45,8 +45,13 @@ class LaboratoryDoor(Door):
 class SecurityDoor:
     __password = "12345"
 
-    def __init__(self, door: LaboratoryDoor):
+    def __init__(self, door: Door):
         self.__door = door
+
+    @staticmethod
+    def set_password(password: str):
+        SecurityDoor.__password = password
+        print(f"Новый пароль {SecurityDoor.__password}.")
 
     def __authentication(self, password: str):
         return password == self.__password
@@ -63,8 +68,9 @@ class SecurityDoor:
 def execute_application():
     laboratory_door = LaboratoryDoor()
     security_door = SecurityDoor(laboratory_door)
+    security_door.set_password("123")
     try:
-        security_door.open("12345")
+        security_door.open("123")
         security_door.close()
     except PasswordError as e:
         print(e)

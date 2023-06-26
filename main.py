@@ -26,6 +26,10 @@ class Transport(ABC):
     def max_capacity(self):
         raise NotImplementedError
 
+    @abstractmethod
+    def deliver(self):
+        raise NotImplementedError
+
 
 class ElectricScooter(Transport):
     __speed = 10
@@ -38,6 +42,10 @@ class ElectricScooter(Transport):
     @property
     def max_capacity(self):
         return self.__max_capacity
+
+    def deliver(self):
+        print(
+            f"Доставка еды транспортом типа ElectricScooter, скорость - {self.__speed}, вместимость - {self.__max_capacity}")
 
 
 class Bicycle(Transport):
@@ -52,6 +60,9 @@ class Bicycle(Transport):
     def max_capacity(self):
         return self.__max_capacity
 
+    def deliver(self):
+        print(f"Доставка еды транспортом типа Bicycle, скорость - {self.__speed}, вместимость - {self.__max_capacity}")
+
 
 class Car(Transport):
     __speed = 40
@@ -65,44 +76,43 @@ class Car(Transport):
     def max_capacity(self):
         return self.__max_capacity
 
+    def deliver(self):
+        print(f"Доставка еды транспортом типа Car, скорость - {self.__speed}, вместимость - {self.__max_capacity}")
+
 
 class Logistics(ABC):
     @abstractmethod
-    def delivery_electric_scooter(self):
-        raise NotImplementedError
-
-    @abstractmethod
-    def delivery_bicycle(self):
-        raise NotImplementedError
-
-    @abstractmethod
-    def delivery_car(self):
+    def create_transport(self):
         raise NotImplementedError
 
 
-class OrderLogistic(Logistics):
+class ScooterLogistic(Logistics):
+    def create_transport(self):
+        return ElectricScooter()
 
-    def __init__(self):
-        self.__electric_scooter = ElectricScooter()
-        self.__bicycle = Bicycle()
-        self.__car = Car()
 
-    def delivery_electric_scooter(self):
-        print(f"Доставка еды электро самокатом, скорость {self.__electric_scooter.speed}, "
-              f"вместимость {self.__electric_scooter.max_capacity}")
+class BicycleLogistic(Logistics):
+    def create_transport(self):
+        return Bicycle()
 
-    def delivery_bicycle(self):
-        print(f"Доставка еды велосипедом, скорость {self.__bicycle.speed}, вместимость {self.__bicycle.max_capacity}")
 
-    def delivery_car(self):
-        print(f"Доставка еды автомобилем, скорость {self.__car.speed}, вместимость {self.__car.max_capacity}")
+class CarLogistic(Logistics):
+    def create_transport(self):
+        return Car()
 
 
 def execute_application():
-    logistic = OrderLogistic()
-    logistic.delivery_electric_scooter()
-    logistic.delivery_bicycle()
-    logistic.delivery_car()
+    scooter_log = ScooterLogistic()
+    scooter = scooter_log.create_transport()
+    scooter.deliver()
+
+    bicycle_log = BicycleLogistic()
+    bicycle = bicycle_log.create_transport()
+    bicycle.deliver()
+
+    car_log = CarLogistic()
+    car = car_log.create_transport()
+    car.deliver()
 
 
 if __name__ == "__main__":

@@ -13,6 +13,12 @@ from abc import ABC, abstractmethod
 # FordCoupe». Таким образом, в вашем абстрактном классе CarsFactory будут 2
 # метода: createSedan() и createCoupe(). Реализуйте программу и протестируйте
 # фабрику на примерах создания конкретных автомобилей.
+
+# Создать классы наследники от SedanCar ToyotaSedan и FordSedan.
+# Создать классы наследники от CoupeCar ToyotaCoupe и FordCoupe.
+# SedanCar и CoupeCar соответственно должны быть абстракциями и
+# методы создающие автомобили уже не могу возвращать объект SedanCar
+# и CoupeCar, а возвращают объекты классов наследников.
 class CarBody(ABC):
     pass
 
@@ -22,6 +28,22 @@ class SedanCar(CarBody):
 
 
 class CoupeCar(CarBody):
+    pass
+
+
+class ToyotaSedan(SedanCar):
+    pass
+
+
+class FordSedan(SedanCar):
+    pass
+
+
+class ToyotaCoupe(CoupeCar):
+    pass
+
+
+class FordCoupe(CoupeCar):
     pass
 
 
@@ -38,21 +60,21 @@ class CarFactory(ABC):
 class ToyotaFactory(CarFactory):
     def create_sedan_car(self):
         print("Произведён автомобиль - ToyotaSedan")
-        return SedanCar
+        return ToyotaSedan
 
     def create_coupe_car(self):
         print("Произведён автомобиль - ToyotaCoupe")
-        return CoupeCar
+        return ToyotaCoupe
 
 
 class FordFactory(CarFactory):
     def create_sedan_car(self):
         print("Произведён автомобиль - FordSedan")
-        return SedanCar
+        return FordSedan
 
     def create_coupe_car(self):
         print("Произведён автомобиль - FordCoupe")
-        return CoupeCar
+        return FordCoupe
 
 
 def execute_application():
